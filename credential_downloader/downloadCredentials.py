@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.action_chains import ActionChains
 import os.path
 from os import path
 import shutil
@@ -64,17 +65,15 @@ def getCredentials(awsNameBox, envName):
     return lines
 
 if __name__ == "__main__":
-   #driver = webdriver.Chrome('chromedriver')
    driver = webdriver.Chrome()
-   #driver = webdriver.Safari()
    driver.get('https://sso.centene.com/AWSPortal-LZ');
    WebDriverWait(driver,90).until(isDuoScreenLoaded)
    driver.switch_to.frame("duo_iframe")
-   auth_buttons = driver.find_element_by_xpath("//*[@id='auth_methods']/fieldset/div[1]/button")
+   #auth_buttons = driver.find_element_by_xpath("//*[@id='auth_methods']/fieldset/div[1]/button")
 
-   auth_buttons.click()
+   ActionChains(driver).click(driver.find_element_by_xpath("//*[@id='auth_methods']/fieldset/div[1]/button")).perform()
+   #auth_buttons.click()
    driver.implicitly_wait(5)
-   #driver.switch_to_default_content()
    driver.switch_to.default_content()
    WebDriverWait(driver,90).until(isAWSAccountDropdownAvailable)
    selectBoxElement = driver.find_element_by_id("aws-name")
